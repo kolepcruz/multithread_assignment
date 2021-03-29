@@ -1,5 +1,11 @@
 # Tudo que estiver em este arquivo nao tera controle de versao
 
+# IDE related config files
+.vscode
+
+# Build
+build
+
 # Executables
 *.out
 *.x
