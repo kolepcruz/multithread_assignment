@@ -12,3 +12,4 @@
 	- https://gitmoji.dev/
 	- https://hpc-tutorials.llnl.gov/posix/abstract/
 	- https://cmake.org/documentation/
+	- https://man7.org/linux/man-pages/man7/pthreads.7.html
