@@ -5,6 +5,7 @@
 
 # Build
 build/**
+debug/**
 
 # Executables
 *.out
