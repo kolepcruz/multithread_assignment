@@ -17,25 +17,37 @@ bool prepare_algorithm(uint32_t kernel_size, BW *image, BW *result)
         exit(EXIT_FAILURE);
     }
 
-    printf("Initializing algorithm Kernel");
+    // printf("Initializing algorithm Kernel");
     BW *kernel;
     kernel = init_kernel(kernel_size);
-    bool exact_fit = true;//!(y_len % 10);
-    uint32_t n_threads = y_len / 5;
+    bool exact_fit = true; //!(y_len % 10);
+    uint32_t n_threads = 4;
     pthread_t *threads = malloc(n_threads * sizeof(pthread_t));
 
-    result = copy_image(image);    
+    result = copy_image(image);
+
+    for (int i = 0; i < image->size.height; i++)
+    {
+        for (int j = 0; j < image->size.width; j++)
+        {
+            printf("%d", result->pixels[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n\n");
 
     if (exact_fit)
     {
-        for (uint32_t n = 0; n < 1; ++n)
+        for (uint32_t n = 0; n < n_threads; ++n)
         {
             ME_args *args;
             args = malloc(sizeof(ME_args));
             args->image = image;
             args->kernel = kernel;
-            args->starting_y = 0;// n * y_len / 5;
-            args->extraleny = image->size.height; // MIN_OP(n * y_len / 5 + y_len / 5 - 1, y_len - 1);
+
+            args->starting_y = n * y_len/n_threads;
+            args->extraleny = y_len/n_threads ;
+
             args->result = result;
             if (pthread_create(&threads[n], NULL, apply_erosion, (void *)(args)) != 0)
             {
@@ -43,25 +55,24 @@ bool prepare_algorithm(uint32_t kernel_size, BW *image, BW *result)
                 exit(EXIT_FAILURE);
             }
         }
-        for (uint32_t t = 0; t < 1; ++t)
+        for (uint32_t t = 0; t < n_threads; t++)
         {
             pthread_join(threads[t], NULL);
         }
     }
 
-    for (uint32_t i = 0; i < image->size.height; i++)
+    for (int i = 0; i < image->size.height; i++)
     {
-        for (uint32_t j = 0; j < image->size.width; j++)
+        for (int j = 0; j < image->size.width; j++)
         {
-            printf("%u ", result->pixels[i][j]);
+            printf("%d", result->pixels[i][j]);
         }
         printf("\n");
     }
-    printf("\n\n");
 
     return true;
 }
-bool *apply_erosion(void *args)
+void *apply_erosion(void *args)
 {
     BW *image = ((ME_args *)args)->image;
     uint32_t starting_y = ((ME_args *)args)->starting_y;
@@ -71,35 +82,24 @@ bool *apply_erosion(void *args)
 
     int32_t kradius = (int32_t)kernel->size.width / 2;
     int32_t x_len = image->size.width;
-    printf("BEFORE PROCESSING THE IMAGE\n");
-
-    for (uint32_t i = 0; i < image->size.height; i++)
-    {
-        for (uint32_t j = 0; j < image->size.width; j++)
-        {
-            printf("%u ", result->pixels[i][j]);
-        }
-        printf("\n");
-    }
-    printf("\n\n");
 
     //kernel center is at kernel->pixels[kradius][kradius]
-    for (int32_t y = starting_y + kradius; y < starting_y + extraleny - kradius; ++y)
+    for (int32_t y = starting_y; y < starting_y + extraleny; ++y)
     {
-        for (int32_t x = kradius; x < x_len - kradius; x++)
-        {
-
-            if (image->pixels[y][x] == BLACK)
+        if(!(y < kradius) && !(y > image->size.height - kradius -1 )){ // Sacergod
+            for (int32_t x = kradius; x < x_len - kradius; x++)
             {
-                for (int32_t i = y - kradius; i <= y + kradius; ++i)
+                if (image->pixels[y][x] == BLACK)
                 {
-                    for (int32_t j = x - kradius; j <= x + kradius; ++j)
+                    for (int32_t i = y - kradius; i <= y + kradius; ++i)
                     {
-                        result->pixels[i][j] = BLACK;
+                        for (int32_t j = x - kradius; j <= x + kradius; ++j)
+                        {
+                            result->pixels[i][j] = BLACK;
+                        }
                     }
                 }
             }
         }
-        return true;
-    }
-}   
+    } 
+}
