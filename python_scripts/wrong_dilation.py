@@ -1,15 +1,15 @@
 from random import randint
 
 
-def clean_edges(m):
-    height, width = len(m), len(m[0])
-    for y in range(height):
-        m[y][0] = 0
-        m[y][width-1] = 0
-    for x in range(width):    
-        m[0][x] = 0
-        m[height-1][x] = 0
-    return m
+# def clean_edges(m):
+#     height, width = len(m), len(m[0])
+#     for y in range(height):
+#         m[y][0] = 0
+#         m[y][width-1] = 0
+#     for x in range(width):    
+#         m[0][x] = 0
+#         m[height-1][x] = 0
+#     return m
 
 def iterate_center(a,b,c):
     b_radius = len(b)//2
@@ -53,6 +53,6 @@ print_matrix(A)
 C = iterate_center(A,B,C)
 
 print_matrix(C)
-C = clean_edges(C)
+# C = clean_edges(C)
 
-print_matrix(C)
+# print_matrix(C)
