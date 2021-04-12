@@ -11,8 +11,8 @@ int main()
     printf("\n\n");
 
     BW *result;
-    bool deubom = prepare_algorithm(1,image,result);
-    
+    bool deubom = prepare_algorithm(4, image, result);
+
     printf("\n\n");
 
     return EXIT_SUCCESS;
