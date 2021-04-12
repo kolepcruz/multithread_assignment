@@ -12,8 +12,8 @@
 #define DIST 2
 // defines standard max value (black).
 #define BLACK 1
-// defines in which frequence threads will be created. 
-#define FREQ 4
+// defines how many lines of the image matrix each thread solves. 
+#define N_LINES 7
 
 int min(int a, int b) { if (a > b) return b; else return a; }
 int max(int a, int b) { if (a < b) return b; else return a; }
@@ -23,16 +23,17 @@ BW* dilation (BW* image, BW* newImage)
 {
   newImage = CNI(newImage, image->size.width, image->size.height);
 
-  int n_thr = newImage->size.height/FREQ;
+  int n_thr = newImage->size.height/N_LINES+1;
   pthread_t* threads = (pthread_t*)malloc(n_thr*sizeof(pthread_t));
   for(int i = 0; i < n_thr; i++)
   {
     struct thr_props *prop = (struct thr_props *)malloc(sizeof(struct thr_props));
     prop->old = image;
     prop->curr = newImage;
-    prop->begin = i*FREQ;
-    prop->end = min((i+1)*FREQ, newImage->size.height); 
-    pthread_create(&threads[i],NULL,SLP,prop);
+    prop->begin = i*N_LINES;
+    prop->end = min((i+1)*N_LINES, newImage->size.height); 
+    if (pthread_create(&threads[i],NULL,SLP,prop))
+      fprintf(stderr, "Erro na criação da thread. \n");
   }
   for(int i = 0; i < n_thr; i++)
     pthread_join(threads[i], NULL);
