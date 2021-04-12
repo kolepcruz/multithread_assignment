@@ -36,4 +36,5 @@ int main()
     printPixels(newImage);
     
     return EXIT_SUCCESS;
+
 }
