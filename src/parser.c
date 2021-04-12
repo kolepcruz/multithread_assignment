@@ -16,7 +16,7 @@ int parse_pbm_BW(FILE *filePointer, BW *image)
                 fprintf(stderr,"EOF found before it was espected");
                 return -1;
             }
-            image->gray[i][j] = number - '0';
+            image->pixels[i][j] = number - '0';
         }
     }
     return 0;
@@ -73,10 +73,10 @@ BW *open_pbm(char *image_name)
     fscanf(filePointer, "%u %u", &image->size.width, &image->size.height);
     printf("%u\n", image->size.width); //DEBUG
 
-    image->gray = malloc(image->size.height * sizeof(Channel_type*));
+    image->pixels = malloc(image->size.height * sizeof(Channel_type*));
     for (int i = 0; i < image->size.height; i++)
     {
-        image->gray[i] = malloc(image->size.width * sizeof(Channel_type));
+        image->pixels[i] = malloc(image->size.width * sizeof(Channel_type));
     }
     parse_pbm_BW(filePointer, image);
 

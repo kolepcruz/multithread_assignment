@@ -1,0 +1,3 @@
+/home/ianloron00/Desktop/Unicamp/2021_1s/OS/multithread_assignment/src/CMakeFiles/rebuild_cache.dir
+/home/ianloron00/Desktop/Unicamp/2021_1s/OS/multithread_assignment/src/CMakeFiles/multithread_assignment.dir
+/home/ianloron00/Desktop/Unicamp/2021_1s/OS/multithread_assignment/src/CMakeFiles/edit_cache.dir
