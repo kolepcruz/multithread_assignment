@@ -20,8 +20,6 @@ int min(int a, int b);
 int max(int a, int b);
 BW* dilation (BW* image, BW* newImage);
 void* SLP (void* input);
-BW* CNI (BW* newImage, int width, int height);
 BW* selectColor(BW* image, BW* newImage, int x, int y);
-void printNewImage(BW* image);
 
 #endif

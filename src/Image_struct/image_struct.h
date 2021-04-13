@@ -52,11 +52,6 @@ BW *new_BW_fast_image(uint32_t width, uint32_t height);
  */
 BW *new_BW_image(uint32_t width, uint32_t height);
 
-void print_image(BW* image);
-
-void delete_image(BW* image);
-
-void save_image(char *destination, BW *image);
-
+void delete_image(BW *image);
 
 #endif //__IMG_STRUCT_H__

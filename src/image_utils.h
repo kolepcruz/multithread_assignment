@@ -11,9 +11,11 @@
 #include "Image_struct/image_struct.h"
 
 #define WHITE 0
-#define BLACK 1 
+#define BLACK 1
 
 BW *copy_image(BW *image);
-BW* init_kernel(uint32_t size);
+BW *init_kernel(uint32_t size);
+void print_image(BW *image);
+void save_image(char *destination, BW *image);
 
 #endif //__IMG_UTILS__
