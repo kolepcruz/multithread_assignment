@@ -11,9 +11,10 @@ int parse_pbm_BW(FILE *filePointer, BW *image)
             number = getc(filePointer);
             while (number == '\n') //Ignore \n's
                 number = getc(filePointer);
-            if (number == EOF){
-                //TODO adicionar o erro errno = 
-                fprintf(stderr,"EOF found before it was espected");
+            if (number == EOF)
+            {
+                //TODO adicionar o erro errno =
+                fprintf(stderr, "EOF found before it was espected");
                 return -1;
             }
             image->pixels[i][j] = number - '0';
@@ -32,9 +33,7 @@ BW *open_pbm(char *image_name)
         perror("Couldn't read the specified file");
         return NULL;
     }
-    BW *image = malloc(sizeof(RGB));
-
-    enum Pbm_type type;
+    // BW *image = malloc(sizeof(RGB));
 
     int temp1 = fgetc(filePointer);
     int temp2 = fgetc(filePointer);
@@ -47,11 +46,15 @@ BW *open_pbm(char *image_name)
     }
 
     int magicNumber = 16 * 16 * temp1 + temp2; // 16*16 to move "casas para o lado"
+    uint32_t width, height;
+    BW *image;
 
     switch (magicNumber)
     {
     case P1:
-        type = magicNumber;
+        fscanf(filePointer, "%u %u", &width, &height);
+        image = new_BW_fast_image(width, height);
+        parse_pbm_BW(filePointer, image);
         break;
     case P2:
     case P3:
@@ -70,15 +73,6 @@ BW *open_pbm(char *image_name)
         return NULL;
         break;
     }
-    fscanf(filePointer, "%u %u", &image->size.width, &image->size.height);
-    printf("%u\n", image->size.width); //DEBUG
-
-    image->pixels = malloc(image->size.height * sizeof(Channel_type*));
-    for (int i = 0; i < image->size.height; i++)
-    {
-        image->pixels[i] = malloc(image->size.width * sizeof(Channel_type));
-    }
-    parse_pbm_BW(filePointer, image);
 
     return image;
 }
