@@ -2,32 +2,39 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include "parser.h"
+#include "Dilation/dilation.h"
 #define N_THREADS 5
 
-/**
- * @brief 
- * This is a test implementation 
- * @param v 
- * @return void* 
- */
-void* thread_test(void *v);
+void printPixels(BW *image)
+{
+  printf("altura: %u largura: %u\n", image->size.height, image->size.width);
 
-int main(){
-    pthread_t threads[N_THREADS];
-
-    for (int i = 0; i < N_THREADS; ++i)
-        if(pthread_create(&threads[i],NULL,thread_test,(void*) (i+1)) != 0)
-            fprintf(stderr,"Problem creating thread no%d",i);
-
-    for (int j = 0; j < N_THREADS; ++j)
-        pthread_join(threads[j],NULL);
-    
-    return EXIT_SUCCESS;
+    for (int i = 0; i < image->size.height; i++)
+    {
+        for (int j = 0; j < image->size.width; j++)
+        {
+            printf("%d", image->pixels[i][j]);
+        }
+        printf("\n");
+    }
 }
 
+int main()
+{
+    BW *image;
+    // char* address = "/home/kenji/UNICAMP/MC504/multithread_assignment/data/image_test.pbm";
+    char* address = "/home/ianloron00/Desktop/Unicamp/2021_1s/OS/multithread_assignment/data/image_test.pbm";
+    image = open_pbm(address);
 
-void* thread_test(void *v){
-    int tid = (int) v;
-    printf("This is my test thread no%d\n",tid);
-    return NULL;
+    printPixels(image);
+    
+    BW *newImage;
+
+    newImage = dilation(image, newImage);
+    
+    printPixels(newImage);
+    
+    return EXIT_SUCCESS;
+
 }
