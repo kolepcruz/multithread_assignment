@@ -1,19 +1,21 @@
 #include "parser.h"
 #include "morphology.h"
+#include "Dilation/dilation.h"
+#define N_THREADS 5
 
 int main()
 {
     BW *image;
-    image = open_pbm("./data/dilation.pbm");
+    char* address = "../data/image_test.pbm";
+    image = open_pbm(address);
 
-    printf("altura: %u largura: %u\n", image->size.height, image->size.width);
+    printPixels(image);
+    
+    BW *newImage;
 
-    printf("\n\n");
-
-    BW *result;
-    bool deubom = prepare_algorithm(4, image, result);
-
-    printf("\n\n");
-
+    newImage = dilation(image, newImage);
+    prepare_algorithm(4, image, newImage);
+    
     return EXIT_SUCCESS;
+
 }
