@@ -1,6 +1,6 @@
 #include "morphology.h"
 
-bool prepare_algorithm(uint32_t kernel_size, BW *image, BW *result)
+BW* prepare_algorithm(uint32_t kernel_size, BW *image, BW *result)
 {
     if (image == NULL)
     {
@@ -25,16 +25,6 @@ bool prepare_algorithm(uint32_t kernel_size, BW *image, BW *result)
     pthread_t *threads = malloc(n_threads * sizeof(pthread_t));
 
     result = copy_image(image);
-
-    for (int i = 0; i < image->size.height; i++)
-    {
-        for (int j = 0; j < image->size.width; j++)
-        {
-            printf("%d", result->pixels[i][j]);
-        }
-        printf("\n");
-    }
-    printf("\n\n");
 
     if (exact_fit)
     {
@@ -61,16 +51,7 @@ bool prepare_algorithm(uint32_t kernel_size, BW *image, BW *result)
         }
     }
 
-    for (int i = 0; i < image->size.height; i++)
-    {
-        for (int j = 0; j < image->size.width; j++)
-        {
-            printf("%d", result->pixels[i][j]);
-        }
-        printf("\n");
-    }
-
-    return true;
+    return result;
 }
 void *apply_erosion(void *args)
 {

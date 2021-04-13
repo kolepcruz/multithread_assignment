@@ -16,7 +16,7 @@ typedef struct ME_args{
     uint32_t extraleny;
 }ME_args;
 
-bool prepare_algorithm(uint32_t kernel_size, BW *image, BW* result);
+BW* prepare_algorithm(uint32_t kernel_size, BW *image, BW* result);
 
 // BW* apply_dilation ( BW* image, uint32_t starting_x,uint32_t starting_y,
 //                     uint32_t extralenx, uint32_t extraleny, uint32_t kernel_size);
