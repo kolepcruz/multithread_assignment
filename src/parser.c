@@ -62,7 +62,7 @@ BW *open_pbm(char *image_name)
     case P5:
     case P6:
         errno = ENOEXEC; /* Exec format error */
-        perror("raw/binary or grayscale/RBR not implemented");
+        perror("raw/binary or pixelsscale/RBR not implemented");
         fclose(filePointer);
         return NULL;
         break;
@@ -73,6 +73,7 @@ BW *open_pbm(char *image_name)
         return NULL;
         break;
     }
+
 
     return image;
 }
